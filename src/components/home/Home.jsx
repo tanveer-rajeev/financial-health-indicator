@@ -7,14 +7,25 @@ import {
   Card,
   CardContent,
   Typography,
+  Paper,
+  styled,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import axios from "axios";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 const Home = () => {
   const { access_token, userId } = useSelector((state) => state.auth.authData);
   const [save, setSave] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [financialHealth, setFinancialHealth] = useState(0.0);
   const [financialData, setFinancialData] = useState({
     id: 0,
@@ -105,6 +116,7 @@ const Home = () => {
           ...savedData,
         }));
         handleHealthCheck();
+        setEdit(false);
         console.log(financialData);
       })
       .catch((error) => {
@@ -133,6 +145,7 @@ const Home = () => {
           ...savedData,
         }));
         handleHealthCheck();
+        setEdit(false);
         console.log(financialData);
       })
       .catch((error) => {
@@ -140,7 +153,7 @@ const Home = () => {
       });
   };
   return (
-    <Box sx={{ flexGrow: 5, paddingTop: 4 }}>
+    <Box>
       {isLoading && <p>Loading..</p>}
       <Card sx={{ minWidth: 85, margin: 5 }}>
         <CardContent>
@@ -164,77 +177,132 @@ const Home = () => {
           </Grid>
         </CardContent>
       </Card>
-      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Grid
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        sx={{ paddingLeft: 15, paddingRight: 15, paddingBottom: 6 }}
+      >
         <Grid item xs={6}>
-          <TextField
-            name="monthlyIncome"
-            label="Monthly Income"
-            fullWidth
-            variant="outlined"
-            value={financialData.monthlyIncome}
-            onChange={(e) => handleInputChange("monthlyIncome", e.target.value)}
-          />
+          <Item sx={{ fontWeight: 700 }}>
+            Monthly Income: {financialData.monthlyIncome}
+          </Item>
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            name="monthlyExpenses"
-            label="Monthly ex"
-            fullWidth
-            variant="outlined"
-            value={financialData.monthlyExpenses}
-            onChange={(e) =>
-              handleInputChange("monthlyExpenses", e.target.value)
-            }
-          />
+          <Item sx={{ fontWeight: 700 }}>
+            Monthly Expenses: {financialData.monthlyExpenses}
+          </Item>
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            name="totalDebts"
-            label="Total debts "
-            fullWidth
-            variant="outlined"
-            value={financialData.totalDebts}
-            onChange={(e) => handleInputChange("totalDebts", e.target.value)}
-          />
+          <Item sx={{ fontWeight: 700 }}>
+            Total Debts: {financialData.totalDebts}
+          </Item>
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            name="totalAssets"
-            label="Total Assets"
-            fullWidth
-            variant="outlined"
-            value={financialData.totalAssets}
-            onChange={(e) => handleInputChange("totalAssets", e.target.value)}
-          />
+          <Item sx={{ fontWeight: 700 }}>
+            Total Assets: {financialData.totalAssets}
+          </Item>
         </Grid>
-        {/* Repeat similar TextField components for other fields */}
       </Grid>
+      {!edit && (
+        <Button
+          sx={{ width: "50%" }}
+          onClick={() => {
+            setEdit(true);
+          }}
+          variant="contained"
+          color="primary"
+          size="large"
+          type="button"
+        >
+          Edit
+        </Button>
+      )}
 
-      <div>
-        {save ? (
-          <Button
-            sx={{ marginTop: 10, width: "50%" }}
-            onClick={handleSave}
-            variant="contained"
-            color="primary"
-            size="large"
-            type="button"
+      {edit && (
+        <>
+          <Grid
+            container
+            rowSpacing={2}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            Save
-          </Button>
-        ) : (
-          <Button
-            sx={{ marginTop: 10, width: "50%" }}
-            onClick={handleUpdate}
-            variant="contained"
-            color="primary"
-            size="large"
-            type="button"
-          >
-            Update
-          </Button>
-        )}
-      </div>
+            <Grid item xs={6}>
+              <TextField
+                name="monthlyIncome"
+                label="Monthly Income"
+                fullWidth
+                variant="outlined"
+                value={financialData.monthlyIncome}
+                onChange={(e) =>
+                  handleInputChange("monthlyIncome", e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="monthlyExpenses"
+                label="Monthly ex"
+                fullWidth
+                variant="outlined"
+                value={financialData.monthlyExpenses}
+                onChange={(e) =>
+                  handleInputChange("monthlyExpenses", e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="totalDebts"
+                label="Total debts "
+                fullWidth
+                variant="outlined"
+                value={financialData.totalDebts}
+                onChange={(e) =>
+                  handleInputChange("totalDebts", e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="totalAssets"
+                label="Total Assets"
+                fullWidth
+                variant="outlined"
+                value={financialData.totalAssets}
+                onChange={(e) =>
+                  handleInputChange("totalAssets", e.target.value)
+                }
+              />
+            </Grid>
+            {/* Repeat similar TextField components for other fields */}
+          </Grid>
+          <Box>
+            {save ? (
+              <Button
+                sx={{ marginTop: 10, width: "50%" }}
+                onClick={handleSave}
+                variant="contained"
+                color="primary"
+                size="large"
+                type="button"
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                sx={{ marginTop: 10, width: "50%" }}
+                onClick={handleUpdate}
+                variant="contained"
+                color="primary"
+                size="large"
+                type="button"
+              >
+                Update
+              </Button>
+            )}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
