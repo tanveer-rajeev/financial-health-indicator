@@ -44,25 +44,6 @@ const Registration = ({ isSignup, formData, setFormData }) => {
   return (
     <>
       <Grid container spacing={2}>
-        {isSignup && (
-          <>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                name="username"
-                ref={refer}
-                onChange={(e) => {
-                  setFormData({ ...formData, username: e.target.value });
-                }}
-                variant="outlined"
-                required
-                fullWidth
-                label="Username"
-                autoFocus
-                type="text"
-              />
-            </Grid>
-          </>
-        )}
         <Grid item xs={12} sm={12}>
           <TextField
             name="email"

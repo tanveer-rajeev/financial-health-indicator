@@ -19,7 +19,6 @@ const Auth = () => {
   const [res, postData] = useAxiosPost();
   console.log(res);
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",

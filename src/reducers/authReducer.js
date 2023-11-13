@@ -1,6 +1,6 @@
 import { AUTH, LOGOUT } from "../constants/actionTypes";
 
-const authReducer = (state = { authData: null }, action) => {
+const authReducer = (state = { authData: null, flag: true }, action) => {
   switch (action.type) {
     case AUTH:
       return { ...state, authData: action?.payload };

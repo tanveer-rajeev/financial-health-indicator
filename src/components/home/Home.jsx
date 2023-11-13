@@ -179,8 +179,8 @@ const Home = () => {
       </Card>
       <Grid
         container
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
         sx={{ paddingLeft: 15, paddingRight: 15, paddingBottom: 6 }}
       >
         <Grid item xs={6}>
@@ -204,6 +204,7 @@ const Home = () => {
           </Item>
         </Grid>
       </Grid>
+
       {!edit && (
         <Button
           sx={{ width: "50%" }}
@@ -274,7 +275,6 @@ const Home = () => {
                 }
               />
             </Grid>
-            {/* Repeat similar TextField components for other fields */}
           </Grid>
           <Box>
             {save ? (
